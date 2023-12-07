@@ -199,7 +199,7 @@ function App() {
                 </>}
 
               <div className="form-control mt-6">
-                {(!!isActive && (account === undefined || account === '')) ?
+                {(!isActive && (account === undefined || account === '')) ?
                   <button type='button' onClick={connect} className="btn btn-primary">Connect Wallet</button>
                   :
                   <div className='w-full'>
