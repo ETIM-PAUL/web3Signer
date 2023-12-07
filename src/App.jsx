@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
-import { getReadOnlyProvider, isSupportedChain, shortenAccount } from './utils'
+import { isSupportedChain, shortenAccount } from './utils'
 import { ethers } from 'ethers';
 
 function App() {
@@ -30,7 +28,7 @@ function App() {
   const {
     register,
     handleSubmit,
-    getValues,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -110,7 +108,9 @@ function App() {
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+
   const signContract = async (data) => {
+    console.log(data)
     setSignLoading(true)
     const signer = await provider.getSigner();
     try {
@@ -127,10 +127,11 @@ function App() {
       // const recoveredSigner = ethers.verifyMessage(ethers.getBytes(packedData), sig);
       // const splitSig = ethers.Signature.from(sig)
       // console.log(ethers.Signature.from(splitSig).serialized)
-      setSignature(sig)
       setTimeout(() => {
         toast.success("Message signature successful");
         setSignLoading(false)
+        setSignature(sig)
+        reset()
       }, 1500);
 
     } catch (e) {
@@ -193,7 +194,7 @@ function App() {
 
               {!!signature &&
                 <>
-                  <p className='text-xl font-bold'>Here is the Signature</p>
+                  <p className='text-xl font-bold'>Here is the last Signed Message</p>
                   <span className='text-white whitespace-pre-line break-all flex w-fit'>{signature}</span>
                 </>}
 
